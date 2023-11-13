@@ -1,24 +1,36 @@
-import logo from './logo.svg';
-import './App.css';
+import { useState } from "react";
+import "./App.css";
+
 
 function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+
+  const [task, setTask] = useState("");
+  const [todoList, setToDoList] = useState([]);
+
+const handleSubmit = (event) => {
+    event.preventDefault();
+    setToDoList (currentTasks => [...currentTasks, task]);
+    setTask('');
+  };
+const handleDelete = (deletingTask) => {
+  const newTasks = todoList.filter((task) => task !== deletingTask)
+  setToDoList(newTasks);
+};
+return (
+  <div classname="App">
+    <form onSubmit= {handleSubmit}>
+      <h1>ToDo List</h1>
+      <input id="enterBar" type="text" value={task} placeholder="Enter Task" onChange= {(e) => setTask(e.target.value)}></input>
+      <button id="addButton">Add</button>
+    </form>
+    <div id="container">
+      <ul>
+        {
+          todoList.map((task,index) => <li key={index}> {task} <button onClick={() => handleDelete(task)}>X</button> </li> )
+        }
+      </ul>
     </div>
+  </div>
   );
 }
 
